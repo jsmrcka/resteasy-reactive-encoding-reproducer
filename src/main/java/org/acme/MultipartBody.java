@@ -1,13 +1,13 @@
 package org.acme;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.core.MediaType;
 
-import org.jboss.resteasy.reactive.PartType;
-import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class MultipartBody {
 
-    @RestForm("text")
+    @FormParam("text")
     @PartType(MediaType.TEXT_PLAIN)
     public String text;
 }
