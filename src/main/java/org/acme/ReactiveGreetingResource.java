@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.reactive.MultipartForm;
 
-@Path("/multipart")
+@Path("/api")
 public class ReactiveGreetingResource {
 
     @POST

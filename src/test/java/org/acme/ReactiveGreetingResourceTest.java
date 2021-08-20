@@ -1,11 +1,10 @@
 package org.acme;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 
 import java.nio.charset.StandardCharsets;
 
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -25,8 +24,20 @@ public class ReactiveGreetingResourceTest {
     private static final String TEXT_WITH_DIACRITICS = new String(TEXT_WITH_DIACRITICS_BYTES, StandardCharsets.UTF_8);
 
     @Test
+    public void testEcho() {
+        RestAssured.given()
+                .contentType(ContentType.TEXT.withCharset(StandardCharsets.UTF_8))
+                .body(TEXT_WITH_DIACRITICS)
+                .post("/api/echo")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .contentType(ContentType.TEXT)
+                .body(equalTo(TEXT_WITH_DIACRITICS));
+    }
+
+    @Test
     public void testTextPartFromMultipart() {
-        whenSendMultipartData("/multipart/text")
+        whenSendMultipartData("/api/text")
                 .contentType(ContentType.TEXT)
                 .body(equalTo(TEXT_WITH_DIACRITICS));
     }
