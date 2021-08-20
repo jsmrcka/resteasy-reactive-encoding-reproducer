@@ -8,11 +8,11 @@ import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.reactive.MultipartForm;
 
-@Path("/api")
-public class ReactiveGreetingResource {
+@Path("/echo")
+public class EchoResource {
 
     @POST
-    @Path("/echo")
+    @Path("/text")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String echo(String request) {
@@ -20,10 +20,10 @@ public class ReactiveGreetingResource {
     }
 
     @POST
-    @Path("/text")
+    @Path("/multipart")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
-    public String postFormReturnText(@MultipartForm MultipartBody multipartBody) {
+    public String multipartEcho(@MultipartForm MultipartBody multipartBody) {
         return multipartBody.text;
     }
 

@@ -11,11 +11,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.MultiPartSpecification;
 
 @QuarkusTest
-public class ReactiveGreetingResourceTest {
+public class EchoResourceTest {
     private static final byte[] TEXT_WITH_DIACRITICS_BYTES = new byte[] { 80, -59, -103, 105, 107, 114, -61, -95, -59, -95, 108,
             101, 110, -61, -67, 32, -59, -66, 108, 111, -59, -91, 111, 117, -60, -115, 107, -61, -67, 32, 107, -59, -81, -59,
             -120, 32, -61, -70, 112, -60, -101, 108, 32, -60, -113, -61, -95, 98, 101, 108, 115, 107, -61, -87, 32, -61, -77,
@@ -28,7 +27,7 @@ public class ReactiveGreetingResourceTest {
         RestAssured.given()
                 .contentType(ContentType.TEXT.withCharset(StandardCharsets.UTF_8))
                 .body(TEXT_WITH_DIACRITICS)
-                .post("/api/echo")
+                .post("/echo/text")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .contentType(ContentType.TEXT)
@@ -36,25 +35,19 @@ public class ReactiveGreetingResourceTest {
     }
 
     @Test
-    public void testTextPartFromMultipart() {
-        whenSendMultipartData("/api/text")
-                .contentType(ContentType.TEXT)
-                .body(equalTo(TEXT_WITH_DIACRITICS));
-    }
-
-    private ValidatableResponse whenSendMultipartData(String path) {
+    public void testMultipartEcho() {
         MultiPartSpecification textSpec = new MultiPartSpecBuilder(TEXT_WITH_DIACRITICS)
                 .controlName("text")
                 .mimeType("text/plain")
                 .charset(StandardCharsets.UTF_8)
                 .build();
-
-        return RestAssured.given()
-                .contentType("multipart/form-data")
+        RestAssured.given()
+                .contentType(ContentType.MULTIPART)
                 .multiPart(textSpec)
-                .post(path)
+                .post("/echo/multipart")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .contentType(ContentType.TEXT)
+                .body(equalTo(TEXT_WITH_DIACRITICS));
     }
-
 }
