@@ -5,11 +5,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
+import io.restassured.config.DecoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.specification.MultiPartSpecification;
 
@@ -23,6 +25,11 @@ public class EchoResourceTest {
             115, 111, 46 };
     // "Kŕdeľ šťastných ďatľov učí pri ústí Váhu mĺkveho koňa obhrýzať kôru a žrať čerstvé mäso."
     private static final String TEXT_WITH_DIACRITICS = new String(TEXT_WITH_DIACRITICS_BYTES, StandardCharsets.UTF_8);
+
+    @BeforeAll
+    static void beforeAll() {
+        RestAssured.config().decoderConfig(DecoderConfig.decoderConfig().defaultContentCharset(StandardCharsets.UTF_8));
+    }
 
     @Test
     public void testEcho() {
