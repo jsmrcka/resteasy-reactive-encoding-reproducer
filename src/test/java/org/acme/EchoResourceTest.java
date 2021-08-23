@@ -27,6 +27,8 @@ public class EchoResourceTest {
     @Test
     public void testEcho() {
         RestAssured.given()
+//                .config(RestAssured.config()
+//                        .decoderConfig(DecoderConfig.decoderConfig().defaultContentCharset(StandardCharsets.UTF_8)))
                 .contentType(ContentType.TEXT.withCharset(StandardCharsets.UTF_8))
                 .body(TEXT_WITH_DIACRITICS)
                 .post("/echo/text")
@@ -44,6 +46,8 @@ public class EchoResourceTest {
                 .charset(StandardCharsets.UTF_8)
                 .build();
         RestAssured.given()
+//                .config(RestAssured.config()
+//                        .decoderConfig(DecoderConfig.decoderConfig().defaultContentCharset(StandardCharsets.UTF_8)))
                 .contentType(ContentType.MULTIPART)
                 .multiPart(textSpec)
                 .post("/echo/multipart")

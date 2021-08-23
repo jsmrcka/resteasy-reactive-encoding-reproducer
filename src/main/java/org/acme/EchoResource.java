@@ -14,7 +14,7 @@ public class EchoResource {
     @POST
     @Path("/text")
     @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public String echo(String request) {
         return request;
     }
@@ -22,7 +22,7 @@ public class EchoResource {
     @POST
     @Path("/multipart")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public String multipartEcho(@MultipartForm MultipartBody multipartBody) {
         return multipartBody.text;
     }
